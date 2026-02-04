@@ -1,0 +1,69 @@
+# Configuration for syncing from official MCP Registry - Streamable-HTTP Only
+#
+# This configuration pulls only streamable-http transport servers from
+# https://registry.modelcontextprotocol.io/ (excludes SSE and stdio)
+#
+# Total servers: 17 (remote HTTP streaming only)
+# Perfect for: Kubernetes, HTTP-only infrastructure, maximum compatibility
+#
+# Usage:
+#   thv-registry-api serve --config upstream-registry-setup/config-streamable-http.yaml
+
+registryName: mcp-streamable-http-registry
+
+registries:
+  - name: mcp-streamable-http
+    format: upstream
+    api:
+      endpoint: https://registry.modelcontextprotocol.io
+    
+    syncPolicy:
+      interval: "1h"
+      retryInterval: "10m"
+      retryLimit: 3
+    
+    # Filter: ONLY streamable-http transport (excludes SSE servers)
+    # Total: 17 streamable-http servers
+    filter:
+      names:
+        include:
+          # Streamable-HTTP servers only (SSE servers excluded)
+          - "ai.alpic.test/test-mcp-server"
+          - "ai.cirra/salesforce-mcp"
+          - "ai.com.mcp/contabo"
+          - "ai.com.mcp/hapi-mcp"
+          - "ai.com.mcp/lenny-rachitsky-podcast"
+          - "ai.com.mcp/openai-tools"
+          - "ai.com.mcp/petstore"
+          - "ai.com.mcp/registry"
+          - "ai.com.mcp/skills-search"
+          - "ai.exa/exa"
+          - "ai.explorium/mcp-explorium"
+          - "ai.filegraph/document-processing"
+          - "ai.gossiper/shopify-admin-mcp"
+          - "ai.klavis/strata"
+          - "ai.kubit/mcp-server"
+          - "ai.llmse/mcp"
+          - "ai.ludo/game-assets"
+        exclude:
+          # Explicitly exclude SSE-only servers
+          - "ai.gomarble/mcp-api"
+
+auth:
+  mode: anonymous
+
+# Optional: Use database for persistence
+# database:
+#   host: localhost
+#   port: 5432
+#   user: db_app
+#   migrationUser: db_migrator
+#   database: registry
+#   sslMode: disable
+#   maxOpenConns: 10
+#   maxIdleConns: 2
+#   connMaxLifetime: "30m"
+
+# File storage for cached data
+fileStorage:
+  baseDir: ./data/mcp-streamable-http

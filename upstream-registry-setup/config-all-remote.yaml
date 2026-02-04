@@ -1,0 +1,49 @@
+# Configuration for syncing from official MCP Registry - All Remote Servers
+#
+# This configuration pulls all remote servers (streamable-http + SSE) from
+# https://registry.modelcontextprotocol.io/ (excludes only stdio)
+#
+# Total servers: ~26 (HTTP + SSE, no local stdio)
+# Perfect for: Remote deployments supporting both HTTP and SSE
+#
+# Usage:
+#   thv-registry-api serve --config upstream-registry-setup/config-all-remote.yaml
+
+registryName: mcp-remote-registry
+
+registries:
+  - name: mcp-remote
+    format: upstream
+    api:
+      endpoint: https://registry.modelcontextprotocol.io
+    
+    syncPolicy:
+      interval: "1h"
+      retryInterval: "10m"
+      retryLimit: 3
+    
+    # Filter: Include all servers with remotes (HTTP or SSE)
+    # Excludes only stdio transport servers
+    filter:
+      names:
+        include:
+          # All remote servers (HTTP and SSE)
+          - "ai.alpic.test/*"
+          - "ai.cirra/*"
+          - "ai.com.mcp/*"
+          - "ai.exa/*"
+          - "ai.explorium/*"
+          - "ai.filegraph/*"
+          - "ai.gomarble/*"  # SSE
+          - "ai.gossiper/*"
+          - "ai.klavis/*"
+          - "ai.kubit/*"
+          - "ai.llmse/*"
+          - "ai.ludo/*"
+
+auth:
+  mode: anonymous
+
+# File storage for cached data
+fileStorage:
+  baseDir: ./data/mcp-remote

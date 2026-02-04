@@ -1,0 +1,26 @@
+# Configuration for syncing from official MCP Registry - All Servers
+#
+# This configuration pulls ALL servers from https://registry.modelcontextprotocol.io/
+# including stdio, SSE, and streamable-http transports (no filtering)
+#
+# Total servers: ~30 (all transports)
+# Perfect for: Complete registry mirror, development, testing
+#
+# Usage:
+#   thv-registry-api serve --config upstream-registry-setup/config-all-servers.yaml
+
+registryName: mcp-all-registry
+
+registries:
+  - name: mcp-all
+    format: upstream
+    api:
+      endpoint: https://registry.modelcontextprotocol.io
+    syncPolicy:
+      interval: "1h"
+
+auth:
+  mode: anonymous
+
+fileStorage:
+  baseDir: ./data/mcp-all
