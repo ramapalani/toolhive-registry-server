@@ -63,6 +63,7 @@ echo "⏳ Waiting for shutdown..."
 sleep 3
 
 # Start server
+export THV_REGISTRY_ENABLE_AGGREGATED_ENDPOINTS=true
 echo "🚀 Starting server with $CONFIG_NAME configuration..."
 cd "$WORKSPACE"
 nohup ./bin/thv-registry-api serve --config "$CONFIG_FILE" > server.log 2>&1 &
